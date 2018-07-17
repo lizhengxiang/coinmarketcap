@@ -20,6 +20,7 @@ func SendToMail(user, password, host, to, subject, body, mailtype string) error 
 	err := smtp.SendMail(host, auth, user, send_to, msg)
 	return err
 }
+
 func SendMail()  {
 	err := SendToMail(User, Password, Host, To, Subject, Body, "html")
 	if err != nil {
