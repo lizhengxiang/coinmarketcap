@@ -73,7 +73,6 @@ func GetAllPrice()  {
 }
 
 func getPrice(url string) (float64,error){
-	return 22.22,nil
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		fmt.Println(err)

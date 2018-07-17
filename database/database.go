@@ -23,7 +23,7 @@ func GetDB() *gorm.DB {
 
 func connect() *gorm.DB {
 	max := getMaxConnection()
-	conn, err := gorm.Open("mysql", "lzx:lzx@/coinmarketcap?charset=utf8&parseTime=True&loc=Local")
+	conn, err := gorm.Open("mysql", "lzhx:123@/coinmarketcap?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err)
 	}
