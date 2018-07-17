@@ -18,6 +18,10 @@ var CoinNum float64
 var Cost	float64
 var Profit	float64
 
+var PriceTotal  float64
+var CostTotal 	float64
+var ProfitTotal 	float64
+
 func GetAllPrice()  {
 	resource:=make(map[string]string)
 	resource["bitcoin"]="https://coinmarketcap.com/currencies/bitcoin/"
@@ -67,7 +71,16 @@ func GetAllPrice()  {
 			Profit:Profit,
 		}
 		model.SaveCoinMarketCap(&data)
+		PriceTotal += Price
+		CostTotal += Cost
+		ProfitTotal += Profit
 	}
+	statisticalPrice := model.StatisticalPrice{
+		PriceTotal:PriceTotal,
+		CostTotal:CostTotal,
+		ProfitTotal:ProfitTotal,
+	}
+	model.SaveStatisticalPrice(&statisticalPrice)
 	//coinmarketcap.SendMail()
 	//model.Test()
 }
