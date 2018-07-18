@@ -44,7 +44,7 @@ func MailTemplate(diff float64,cointype int){
 		<html>
 			<body>
 				<h3>
-					`+"coin type " + strconv.Itoa(cointype)+" price fluctuation"+float32s2+`
+					`+"coin type " + strconv.Itoa(cointype)+" price fluctuation "+float32s2+`
 				</h3>
 			</body>
 		</html>
