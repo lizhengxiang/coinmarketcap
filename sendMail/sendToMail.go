@@ -1,9 +1,10 @@
-package coinmarketcap
+package sendMail
 
 import (
 	"strings"
 	"net/smtp"
 	"fmt"
+	"strconv"
 )
 
 func SendToMail(user, password, host, to, subject, body, mailtype string) error {
@@ -21,7 +22,7 @@ func SendToMail(user, password, host, to, subject, body, mailtype string) error 
 	return err
 }
 
-func SendMail()  {
+func SendMail(Body string)  {
 	err := SendToMail(User, Password, Host, To, Subject, Body, "html")
 	if err != nil {
 		fmt.Println("Send mail error!")
@@ -29,4 +30,21 @@ func SendMail()  {
 	} else {
 		fmt.Println("Send mail success!")
 	}
+}
+
+
+
+func MailTemplate(diff float64,cointype int){
+	float32s2 := strconv.FormatFloat(diff, 'f', -1, 64)//float64
+	fmt.Println(float32s2)
+	var Body = `
+		<html>
+			<body>
+				<h3>
+					`+"cointype" + strconv.Itoa(cointype)+"price fluctuation"+float32s2+`
+				</h3>
+			</body>
+		</html>
+		`
+	SendMail(Body)
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"strconv"
 	"coinmarketcap/model"
+	"coinmarketcap/monitor"
 )
 
 func GetBitcoinPrice (nowPrice,total float64)  float64 {
@@ -71,6 +72,7 @@ func GetAllPrice()  {
 			Profit:Profit,
 		}
 		model.SaveCoinMarketCap(&data)
+		monitor.MonitorTypePrice(&data)
 		PriceTotal += Price
 		CostTotal += Cost
 		ProfitTotal += Profit
@@ -81,6 +83,7 @@ func GetAllPrice()  {
 		ProfitTotal:ProfitTotal,
 	}
 	model.SaveStatisticalPrice(&statisticalPrice)
+	monitor.MonitorTotalPrice(&statisticalPrice)
 	//coinmarketcap.SendMail()
 	//model.Test()
 }
