@@ -26,29 +26,35 @@ func MonitorTotalPrice(data *model.StatisticalPrice)  {
 
 func Gain(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 	resultMin := model.GetNumHoursMinPrice(&parameter)
-	if 100 < parameter.Profit - resultMin.Profit {
-		diff := parameter.Profit - resultMin.Profit
-		sendMail.MailTemplate(diff,parameter.Cointype)
+
+	GetMonitorByCointype := UpsAndDownsCalculation(parameter.Cointype,2,parameter.Profit)
+
+	if 50 < parameter.Profit - resultMin.Profit && GetMonitorByCointype.Timediff > 20 ||
+		GetMonitorByCointype.TriggerNum > 15 || GetMonitorByCointype.Profitdiff > 20 &&
+		GetMonitorByCointype.Timediff > 20{
+			model.DeleteMonitor(1,parameter.Cointype)
+			SaveMonitor(parameter.Profit,parameter.Cointype,GetMonitorByCointype.TriggerNum+1, 2)
+			diff := parameter.Profit - resultMin.Profit
+			sendMail.MailTemplate(diff,parameter.Cointype)
 	}
 }
 
 func Decline(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 	resultMax := model.GetNumHoursMaxPrice(&parameter)
-	//A drop of 20
 	GetMonitorByCointype := UpsAndDownsCalculation(parameter.Cointype,1,parameter.Profit)
 
-	if (20 < resultMax.Profit - parameter.Profit && GetMonitorByCointype.Timediff > 20) ||
-		(GetMonitorByCointype.TriggerNum > 15) && GetMonitorByCointype.Profitdidd < 0 &&
+	if 20 < resultMax.Profit - parameter.Profit && GetMonitorByCointype.Timediff > 20 ||
+		GetMonitorByCointype.TriggerNum > 15 || GetMonitorByCointype.Profitdiff < 0 &&
 		GetMonitorByCointype.Timediff > 20 {
 			model.DeleteMonitor(1,parameter.Cointype)
 			SaveMonitor(parameter.Profit,parameter.Cointype,GetMonitorByCointype.TriggerNum+1, 1)
-			diff := parameter.Profit - parameter.Profit
+			diff := parameter.Profit - resultMax.Profit
 			sendMail.MailTemplate(diff,parameter.Cointype)
 	}
 }
 
 type UpsAndDowns struct {
-	Profitdidd float64
+	Profitdiff float64
 	Timediff 	int64
 	TriggerNum  int
 }
@@ -59,7 +65,7 @@ func UpsAndDownsCalculation(cointype,types int,profit float64)  UpsAndDowns {
 		SaveMonitor(profit,cointype,1,types)
 	}
 	return UpsAndDowns{
-		Profitdidd:profit - getMonitorByCointype.NowPrice,
+		Profitdiff:profit - getMonitorByCointype.NowPrice,
 		TriggerNum: getMonitorByCointype.TriggerNum,
 		Timediff:time.Now().Unix() - getMonitorByCointype.CreatedAt.Unix(),
 	}
