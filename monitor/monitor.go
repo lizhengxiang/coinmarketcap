@@ -61,9 +61,9 @@ type UpsAndDowns struct {
 
 func UpsAndDownsCalculation(cointype,types int,profit float64)  UpsAndDowns {
 	getMonitorByCointype := model.GetMonitorByCointype(cointype,types)
-	if 0 == getMonitorByCointype.TriggerNum {
+	/*if 0 == getMonitorByCointype.TriggerNum {
 		SaveMonitor(profit,cointype,1,types)
-	}
+	}*/
 	return UpsAndDowns{
 		Profitdiff:profit - getMonitorByCointype.NowPrice,
 		TriggerNum: getMonitorByCointype.TriggerNum,
