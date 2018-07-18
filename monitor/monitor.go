@@ -33,9 +33,12 @@ func Gain(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 		GetMonitorByCointype.TriggerNum > 15 || GetMonitorByCointype.Profitdiff > 20 &&
 		GetMonitorByCointype.Timediff > 1800{
 			model.DeleteMonitor(1,parameter.Cointype)
-			SaveMonitor(parameter.Profit,parameter.Cointype,GetMonitorByCointype.TriggerNum+1, 2)
+			SaveMonitor(parameter.Profit,parameter.Cointype,1, 2)
 			diff := parameter.Profit - resultMin.Profit
 			sendMail.MailTemplate(diff,parameter.Cointype)
+	}
+	if 50 < parameter.Profit - resultMin.Profit {
+		SaveMonitor(parameter.Profit,parameter.Cointype,GetMonitorByCointype.TriggerNum+1, 2)
 	}
 }
 
@@ -47,9 +50,12 @@ func Decline(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 		GetMonitorByCointype.TriggerNum > 15 || GetMonitorByCointype.Profitdiff < 0 &&
 		GetMonitorByCointype.Timediff > 1800 {
 			model.DeleteMonitor(1,parameter.Cointype)
-			SaveMonitor(parameter.Profit,parameter.Cointype,GetMonitorByCointype.TriggerNum+1, 1)
+			SaveMonitor(parameter.Profit,parameter.Cointype,1, 1)
 			diff := parameter.Profit - resultMax.Profit
 			sendMail.MailTemplate(diff,parameter.Cointype)
+	}
+	if 20 < resultMax.Profit - parameter.Profit {
+		UpdateMonitor(GetMonitorByCointype.Id,GetMonitorByCointype.TriggerNum+1)
 	}
 }
 
@@ -57,6 +63,7 @@ type UpsAndDowns struct {
 	Profitdiff float64
 	Timediff 	int64
 	TriggerNum  int
+	Id 	uint
 }
 
 func UpsAndDownsCalculation(cointype,types int,profit float64)  UpsAndDowns {
@@ -69,6 +76,7 @@ func UpsAndDownsCalculation(cointype,types int,profit float64)  UpsAndDowns {
 		Profitdiff:profit - getMonitorByCointype.NowPrice,
 		TriggerNum: getMonitorByCointype.TriggerNum,
 		Timediff:time.Now().Unix() - getMonitorByCointype.CreatedAt.Unix(),
+		Id:getMonitorByCointype.ID,
 	}
 }
 
@@ -80,4 +88,8 @@ func SaveMonitor(nowPrice float64,cointype ,triggerNum ,types  int )  {
 		Types:types,
 	}
 	model.SaveMonitor(&data)
+}
+
+func UpdateMonitor(Id uint,TriggerNum int)  {
+	model.UpdateMonitor(Id, TriggerNum)
 }
