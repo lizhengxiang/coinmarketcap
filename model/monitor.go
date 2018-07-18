@@ -32,3 +32,8 @@ func GetMonitorByCointype(cointype,types int) Monitor {
 	db.Where("cointype = ? AND	 types = ?", cointype,types).First(&Monitor{}).Scan(&result)
 	return result
 }
+
+func UpdateMonitor(Id uint,TriggerNum int)  {
+	db := databaseServer.GetDB()
+	db.Model(&Monitor{}).Update(Monitor{TriggerNum:TriggerNum}).Where("id = ?",Id)
+}
