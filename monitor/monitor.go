@@ -38,14 +38,13 @@ func Gain(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 			sendMail.MailTemplate(diff,parameter.Cointype)
 	}
 	if 50 < parameter.Profit - resultMin.Profit {
-		SaveMonitor(parameter.Profit,parameter.Cointype,GetMonitorByCointype.TriggerNum+1, 2)
+		UpdateMonitor(GetMonitorByCointype.Id,GetMonitorByCointype.TriggerNum+1)
 	}
 }
 
 func Decline(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 	resultMax := model.GetNumHoursMaxPrice(&parameter)
 	GetMonitorByCointype := UpsAndDownsCalculation(parameter.Cointype,1,parameter.Profit)
-
 	if 20 < resultMax.Profit - parameter.Profit && GetMonitorByCointype.Timediff > 1800 ||
 		GetMonitorByCointype.TriggerNum > 15 || GetMonitorByCointype.Profitdiff < 0 &&
 		GetMonitorByCointype.Timediff > 1800 {
