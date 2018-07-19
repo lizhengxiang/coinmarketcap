@@ -34,5 +34,4 @@ type StatisticalPrice struct {
 	PriceTotal  float64
 	CostTotal 	float64
 	ProfitTotal 	float64
-	BuyTime time.Time
 }
