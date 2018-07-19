@@ -3,6 +3,7 @@ package model
 import (
 	"github.com/jinzhu/gorm"
 	"coinmarketcap/database"
+	"time"
 )
 
 type Coinmarketcap struct {
@@ -12,6 +13,7 @@ type Coinmarketcap struct {
 	CoinNum float64
 	Cost	float64
 	Profit	float64
+	BuyTime time.Time
 }
 
 
@@ -32,4 +34,5 @@ type StatisticalPrice struct {
 	PriceTotal  float64
 	CostTotal 	float64
 	ProfitTotal 	float64
+	BuyTime time.Time
 }

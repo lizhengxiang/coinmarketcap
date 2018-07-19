@@ -24,52 +24,26 @@ var CostTotal 	float64
 var ProfitTotal 	float64
 
 func GetAllPrice()  {
-	resource:=make(map[string]string)
-	resource["bitcoin"]="https://coinmarketcap.com/currencies/bitcoin/"
-	resource["ethereum"]="https://coinmarketcap.com/currencies/ethereum/"
-	resource["eos"]="https://coinmarketcap.com/currencies/eos/"
-	resource["gnx"]="https://coinmarketcap.com/currencies/genaro-network/"
-
-	for k,v := range  resource {
-		price, err := getPrice(v)
+	resource := model.GetCurrencyInfo()
+	for _,v := range  resource {
+		price, err := getPrice(v.Url)
 		if nil != err {
 			fmt.Println("get price error")
 			return
 		}
-		if "bitcoin" == k {
-			Price = GetBitcoinPrice(price,BitcoinTotal)
-			Cointype = 1
-			CoinNum = BitcoinTotal
-			Cost = BitcoinCost
-			Profit = Price - Cost
-		}
-		if "ethereum" == k {
-			Price = GetBitcoinPrice(price,EthereumTotal)
-			Cointype = 2
-			CoinNum = EthereumTotal
-			Cost = EthereumCost
-			Profit = Price - Cost
-		}
-		if "eos" == k {
-			Price = GetBitcoinPrice(price,EosTotal)
-			Cointype = 3
-			CoinNum = EosTotal
-			Cost = EosCost
-			Profit = Price - Cost
-		}
-		if "gnx" == k {
-			Price = GetBitcoinPrice(price,GnxTotal)
-			Cointype = 4
-			CoinNum = GnxTotal
-			Cost = GnxCost
-			Profit = Price - Cost
-		}
+		Price = GetBitcoinPrice(price,v.CurrencyNum)
+		Cointype = v.Cointype
+		CoinNum = v.CurrencyNum
+		Cost = v.BuyingPrice
+		Profit = Price - Cost
+
 		data := model.Coinmarketcap{
 			Cointype:Cointype,
 			Price:Price,
 			CoinNum:CoinNum,
 			Cost:Cost,
 			Profit:Profit,
+			BuyTime:v.CreatedAt,
 		}
 		model.SaveCoinMarketCap(&data)
 		monitor.MonitorTypePrice(&data)
