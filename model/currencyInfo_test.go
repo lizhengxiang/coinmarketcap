@@ -52,3 +52,8 @@ func TestGetCurrencyInfo(t *testing.T)  {
 	fmt.Println(result)
 	fmt.Println(len(result))
 }
+
+func TestGetCurrencyInfoByCointype(t *testing.T)  {
+	result := GetCurrencyInfoByCointype(1)
+	fmt.Println(result.Name)
+}

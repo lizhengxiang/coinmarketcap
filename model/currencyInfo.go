@@ -34,6 +34,13 @@ func GetCurrencyInfo() []CurrencyInfo {
 	return CurrencyInfoResults
 }
 
+func GetCurrencyInfoByCointype(cointype int) CurrencyInfo {
+	var CurrencyInfoResults CurrencyInfo
+	db := databaseServer.GetDB()
+	db.Where("cointype = ?",cointype).Find(&CurrencyInfoResults)
+	return CurrencyInfoResults
+}
+
 //BTC 0.070224900.000000000.07022490 ≈ 3410.14
 //EOS 19.969504300.000000000.02310970 ≈ 1122.21
 //GNX 998.194908870.000000000.02019348 ≈ 980.60

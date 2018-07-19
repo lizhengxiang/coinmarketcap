@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strconv"
 	"math"
+	"coinmarketcap/model"
 )
 
 func SendToMail(user, password, host, to, subject, body, mailtype string) error {
@@ -23,7 +24,7 @@ func SendToMail(user, password, host, to, subject, body, mailtype string) error 
 	return err
 }
 
-func SendMail(Body string)  {
+func SendMail(Body,Subject string)  {
 	err := SendToMail(User, Password, Host, To, Subject, Body, "html")
 	if err != nil {
 		fmt.Println("Send mail error!")
@@ -35,19 +36,23 @@ func SendMail(Body string)  {
 
 
 
-func MailTemplate(diff float64,cointype int){
+func MailTemplate(diff float64,cointype int, Profit float64){
 	pow10_n := math.Pow10(2)
 	diffResult := math.Trunc((diff+0.5/pow10_n)*pow10_n) / pow10_n
 	float32s2 := strconv.FormatFloat(diffResult, 'f', -1, 64)//float64
-	fmt.Println(float32s2)
+
+	profitResult := math.Trunc((Profit+0.5/pow10_n)*pow10_n) / pow10_n
+	profits2 := strconv.FormatFloat(profitResult, 'f', -1, 64)//float64
+	result := model.GetCurrencyInfoByCointype(cointype)
 	var Body = `
 		<html>
 			<body>
 				<h3>
-					`+"coin type " + strconv.Itoa(cointype)+" price fluctuation "+float32s2+`
+					`+"coin type " + result.Name +" price fluctuation "+float32s2+"current Profit "+profits2+`
 				</h3>
 			</body>
 		</html>
 		`
-	SendMail(Body)
+	Subject := result.Name +" price fluctuation"
+	SendMail(Body, Subject)
 }
