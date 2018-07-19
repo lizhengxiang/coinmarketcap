@@ -57,3 +57,17 @@ func TestGetCurrencyInfoByCointype(t *testing.T)  {
 	result := GetCurrencyInfoByCointype(1)
 	fmt.Println(result.Name)
 }
+
+func TestSaveCurrencyInfoETH(t *testing.T)  {
+	DeleteCurrencyInfo(1)
+
+	testData := CurrencyInfo{
+		Name: "BTC",
+		BuyingPrice:5593.85,
+		CurrencyNum:0.11281444,
+		Url:"https://coinmarketcap.com/currencies/bitcoin/",
+		Cointype:1,
+		StartPrice:7442.33,
+	}
+	SaveCurrencyInfo(&testData)
+}

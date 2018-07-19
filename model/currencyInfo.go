@@ -12,6 +12,9 @@ type CurrencyInfo struct {
 	CurrencyNum float64
 	Url string
 	Cointype int
+	StartPrice float64
+	EndPrice float64
+	StartEndDiff float64
 }
 
 
