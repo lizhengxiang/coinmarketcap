@@ -25,6 +25,7 @@ func SendToMail(user, password, host, to, subject, body, mailtype string) error 
 }
 
 func SendMail(Body,Subject string)  {
+	fmt.Println(Subject)
 	err := SendToMail(User, Password, Host, To, Subject, Body, "html")
 	if err != nil {
 		fmt.Println("Send mail error!")
@@ -48,7 +49,7 @@ func MailTemplate(diff float64,cointype int, Profit float64){
 		<html>
 			<body>
 				<h3>
-					`+"coin type " + result.Name +" price fluctuation "+float32s2+"current Profit "+profits2+`
+					`+"coin type " + result.Name +" price fluctuation "+float32s2+" current Profit "+profits2+`
 				</h3>
 			</body>
 		</html>
