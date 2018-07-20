@@ -54,6 +54,6 @@ func MailTemplate(diff float64,cointype int, Profit float64){
 			</body>
 		</html>
 		`
-	Subject := result.Name +" price fluctuation"
+	Subject := result.Name +" fluctuation"
 	SendMail(Body, Subject)
 }
