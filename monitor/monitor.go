@@ -38,7 +38,7 @@ func Gain(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 	if 50 < parameter.Profit - resultMin.Profit && GetMonitorByCointype.Timediff > 1800 ||
 		GetMonitorByCointype.TriggerNum > 15 || GetMonitorByCointype.Profitdiff > 20 &&
 		GetMonitorByCointype.Timediff > 900{
-			model.DeleteMonitor(1,parameter.Cointype)
+			model.DeleteMonitor(2,parameter.Cointype)
 			SaveMonitor(parameter.Profit,parameter.Cointype,1, 2)
 			diff := parameter.Profit - resultMin.Profit
 			sendMail.MailTemplate(diff,parameter.Cointype,parameter.Profit)
