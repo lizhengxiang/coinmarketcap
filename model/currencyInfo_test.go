@@ -62,7 +62,7 @@ func TestSaveCurrencyInfoETH(t *testing.T)  {
 	DeleteCurrencyInfo(2)
 	testData := CurrencyInfo{
 		Name: "BTC",
-		BuyingPrice:828.42232000*6.7697,
+		BuyingPrice:828.42232000,
 		CurrencyNum:0.1133,
 		Cointype:1,
 		StartPrice:7292.45,

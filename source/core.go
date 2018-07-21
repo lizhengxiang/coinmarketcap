@@ -2,18 +2,17 @@ package coinmarketcap
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"strconv"
 	"coinmarketcap/model"
 	"coinmarketcap/monitor"
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
 	"strings"
+	"coinmarketcap/monitorType"
 )
 
 func GetBitcoinPrice (nowPrice,total float64)  float64 {
-	return nowPrice * total * USD
+	return nowPrice * total
 }
 
 
@@ -30,9 +29,11 @@ var ProfitTotal 	float64
 func GetAllPrice()  {
 	resource := model.GetCurrencyInfo()
 	getVirtualCurrencyAll,err := GetVirtualCurrencyAll()
-	if false == err {
+	if false == err || 0 == len(getVirtualCurrencyAll){
 		return
 	}
+	SaveVirtualCurrency(getVirtualCurrencyAll)
+
 	for _,v := range  resource {
 		price  := getVirtualCurrencyAll[v.Name].Close
 		Price = GetBitcoinPrice(price,v.CurrencyNum)
@@ -66,20 +67,12 @@ func GetAllPrice()  {
 	//model.Test()
 }
 
-func getPrice(url string) (float64,error){
-	doc, err := goquery.NewDocument(url)
-	if err != nil {
-		fmt.Println(err)
+func SaveVirtualCurrency(getVirtualCurrencyAll map[string]monitorType.Symbols)  {
+	for k,v := range getVirtualCurrencyAll {
+		model.SaveVirtualCurrency(k,v)
 	}
-	var result string
-	doc.Find("#quote_price").Each(func(i int, s *goquery.Selection) {
-		result = s.Find(".h2").Text()
-	})
-	return strconv.ParseFloat(result, 32)
+
 }
-
-
-
 
 var url="https://www.huobi.com/-/x/general/index/constituent_symbol/detail?r=zuvksd9xrq8"
 
@@ -89,15 +82,12 @@ type PriceAll struct {
 }
 
 type SymbolsArr struct{
-	SymbolsArray []Symbols `json:"symbols"`
+	SymbolsArray []monitorType.Symbols `json:"symbols"`
 }
 
-type Symbols struct {
-	Close float64	`json:"close"`
-	Name string		`json:"name"`
-}
 
-func GetVirtualCurrencyAll() (map[string]Symbols,bool) {
+
+func GetVirtualCurrencyAll() (map[string]monitorType.Symbols,bool) {
 	var PriceAllResult PriceAll
 	resp, err := http.Get(url)
 	if err != nil {
@@ -115,7 +105,7 @@ func GetVirtualCurrencyAll() (map[string]Symbols,bool) {
 		fmt.Println(err)
 		return nil,false
 	}
-	resultMap := make(map[string]Symbols)
+	resultMap := make(map[string]monitorType.Symbols)
 	for _,v := range PriceAllResult.Data.SymbolsArray {
 		key := strings.ToUpper(v.Name)
 		resultMap[key] = v

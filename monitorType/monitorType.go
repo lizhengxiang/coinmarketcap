@@ -8,3 +8,9 @@ type GetNumHoursMaxPriceParameter struct {
 	Cointype int
 	Profit float64
 }
+
+
+type Symbols struct {
+	Close float64	`json:"close"`
+	Name string		`json:"name"`
+}
