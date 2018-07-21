@@ -1,6 +1,6 @@
 package coinmarketcap
 
-var USD  = 6.69
+var USD  = 6.7697
 var BitcoinTotal  = 0.03486000
 var EthereumTotal  = 0.34222155
 var EosTotal  = 20.97950430

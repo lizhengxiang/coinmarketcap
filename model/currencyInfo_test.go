@@ -6,7 +6,7 @@ import (
 )
 
 func TestSaveCurrencyInfo(t *testing.T) {
-	testData := CurrencyInfo{
+	/*testData := CurrencyInfo{
 		Name: "BTC",
 		BuyingPrice:3410.14,
 		CurrencyNum:0.070224900,
@@ -40,7 +40,7 @@ func TestSaveCurrencyInfo(t *testing.T) {
 		Url:"https://coinmarketcap.com/currencies/genaro-network/",
 		Cointype:4,
 	}
-	SaveCurrencyInfo(&testData)
+	SaveCurrencyInfo(&testData)*/
 }
 
 func TestDeleteCurrencyInfo(t *testing.T) {
@@ -59,15 +59,13 @@ func TestGetCurrencyInfoByCointype(t *testing.T)  {
 }
 
 func TestSaveCurrencyInfoETH(t *testing.T)  {
-	DeleteCurrencyInfo(1)
-
+	DeleteCurrencyInfo(2)
 	testData := CurrencyInfo{
 		Name: "BTC",
-		BuyingPrice:5593.85,
-		CurrencyNum:0.11281444,
-		Url:"https://coinmarketcap.com/currencies/bitcoin/",
+		BuyingPrice:828.42232000*6.7697,
+		CurrencyNum:0.1133,
 		Cointype:1,
-		StartPrice:7442.33,
+		StartPrice:7292.45,
 	}
 	SaveCurrencyInfo(&testData)
 }
