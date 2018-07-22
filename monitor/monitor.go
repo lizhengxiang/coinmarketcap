@@ -35,7 +35,7 @@ func Gain(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 
 	GetMonitorByCointype := UpsAndDownsCalculation(parameter.Cointype,2,parameter.Profit)
 
-	if 50 < parameter.Profit - resultMin.Profit && GetMonitorByCointype.Timediff > 1800 ||
+	if 20 < parameter.Profit - resultMin.Profit && GetMonitorByCointype.Timediff > 1800 ||
 		GetMonitorByCointype.TriggerNum > 15 || GetMonitorByCointype.Profitdiff > 20 &&
 		GetMonitorByCointype.Timediff > 900{
 			model.DeleteMonitor(2,parameter.Cointype)
@@ -43,7 +43,7 @@ func Gain(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 			diff := parameter.Profit - resultMin.Profit
 			sendMail.MailTemplate(diff,parameter.Cointype,parameter.Profit)
 	}
-	if 50 < parameter.Profit - resultMin.Profit {
+	if 20 < parameter.Profit - resultMin.Profit {
 		UpdateMonitor(GetMonitorByCointype.Id,GetMonitorByCointype.TriggerNum+1)
 	}
 }
@@ -54,7 +54,7 @@ func Decline(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 	//离第一次报警时间达到30 分钟
 	//当前值-上一次报警的值小于0 且时间达到30分钟
 	GetMonitorByCointype := UpsAndDownsCalculation(parameter.Cointype,1,parameter.Profit)
-	if 20 > resultMax.Profit - parameter.Profit && GetMonitorByCointype.Timediff > 1800 ||
+	if 10 > resultMax.Profit - parameter.Profit && GetMonitorByCointype.Timediff > 1800 ||
 		GetMonitorByCointype.TriggerNum > 15 || GetMonitorByCointype.Profitdiff < 0 &&
 		GetMonitorByCointype.Timediff > 900 {
 			model.DeleteMonitor(1,parameter.Cointype)
@@ -62,7 +62,7 @@ func Decline(parameter monitorType.GetNumHoursMaxPriceParameter)  {
 			diff := parameter.Profit - resultMax.Profit
 			sendMail.MailTemplate(diff,parameter.Cointype,parameter.Profit)
 	}
-	if 20 > resultMax.Profit - parameter.Profit {
+	if 10 > resultMax.Profit - parameter.Profit {
 		UpdateMonitor(GetMonitorByCointype.Id,GetMonitorByCointype.TriggerNum+1)
 	}
 }
