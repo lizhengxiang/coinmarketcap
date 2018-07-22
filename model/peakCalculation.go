@@ -14,3 +14,11 @@ func GetHighestPrice(startTime,endTime time.Time, Cointype int) float64 {
 	return result.Price
 }
 
+//Get the low price in the last 48 hours
+func GetLowPrice(startTime,endTime time.Time, Cointype int) float64 {
+	var result VirtualCurrencyPrice
+	db := databaseServer.GetDB()
+	db.Where("created_at > ? AND created_at < ? AND cointype = ?", startTime,endTime,Cointype).
+		Order("price ASC").First(&result)
+	return result.Price
+}
